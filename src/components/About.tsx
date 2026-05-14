@@ -43,7 +43,7 @@ export default function About() {
           {/* PLACEHOLDER: replace with Shannon's real bio (2 short paragraphs, 150-250 words total). */}
           <div className="mt-7 space-y-5 text-muted text-base md:text-lg leading-relaxed">
             <p className="italic text-muted/80">
-              [Shannon's intro paragraph goes here. A few sentences about who
+              [Shannon&apos;s intro paragraph goes here. A few sentences about who
               she is, how she works, and what drew her to wedding planning.]
             </p>
             <p className="italic text-muted/80">
