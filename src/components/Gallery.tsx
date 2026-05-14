@@ -1,47 +1,76 @@
+"use client";
+
 import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
 
 type Tile = {
   title: string;
-  location: string;
-  src?: string;
-  gradient: string;
+  detail: string;
+  src: string;
   span?: string;
 };
 
-// PLACEHOLDER: drop real photos in public/gallery/ and set `src` per tile.
-// Gradient stays as a fallback so the layout still works pre-photos.
 const tiles: Tile[] = [
   {
-    title: "Garden ceremony",
-    location: "Hudson Valley, NY",
-    gradient: "linear-gradient(135deg, #cfe3df 0%, #6fb0ad 55%, #2f8a8a 100%)",
+    title: "Brittany & Jeffrey",
+    detail: "December 2023",
+    src: "/gallery/brittany-jeffrey.jpg",
     span: "md:col-span-2 md:row-span-2",
   },
   {
-    title: "Twilight reception",
-    location: "Newport, RI",
-    gradient: "linear-gradient(160deg, #f1ebe1 0%, #d9c9a8 60%, #8a6a3f 100%)",
-  },
-  {
-    title: "Florals by candle",
-    location: "Brooklyn, NY",
-    gradient: "linear-gradient(155deg, #f7e7e1 0%, #d9a89a 55%, #8a4a3c 100%)",
-  },
-  {
-    title: "Coastal vows",
-    location: "Cape Cod, MA",
-    gradient: "linear-gradient(140deg, #e6f0ef 0%, #9cc4c0 55%, #1f6a6a 100%)",
+    title: "Kelly & Ian",
+    detail: "September 2023",
+    src: "/gallery/kelly-ian.jpg",
     span: "md:col-span-2",
   },
   {
-    title: "Stone barn supper",
-    location: "Berkshires, MA",
-    gradient: "linear-gradient(160deg, #ece4d8 0%, #b7a17d 55%, #5b4a30 100%)",
+    title: "Pop the bubbly",
+    detail: "Reception seating",
+    src: "/gallery/seating-chart.jpg",
+    span: "md:col-span-2",
+  },
+  {
+    title: "Alora & Patrick",
+    detail: "Garden guest book",
+    src: "/gallery/alora-patrick.jpg",
+    span: "md:col-span-4",
   },
 ];
 
 export default function Gallery() {
-  const hasPhotos = tiles.some((t) => t.src);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const isOpen = activeIndex !== null;
+
+  const close = useCallback(() => setActiveIndex(null), []);
+  const prev = useCallback(
+    () =>
+      setActiveIndex((i) =>
+        i === null ? null : (i - 1 + tiles.length) % tiles.length,
+      ),
+    [],
+  );
+  const next = useCallback(
+    () => setActiveIndex((i) => (i === null ? null : (i + 1) % tiles.length)),
+    [],
+  );
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") close();
+      else if (e.key === "ArrowLeft") prev();
+      else if (e.key === "ArrowRight") next();
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [isOpen, close, prev, next]);
+
+  const active = activeIndex !== null ? tiles[activeIndex] : null;
+
   return (
     <section id="gallery" className="relative py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6">
@@ -58,55 +87,125 @@ export default function Gallery() {
           </p>
         </div>
 
-        {!hasPhotos && (
-          <p className="mt-6 text-xs tracking-[0.22em] uppercase text-teal-deep/70">
-            Gallery photos coming soon
-          </p>
-        )}
-
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-[200px] md:auto-rows-[220px] gap-4">
-          {tiles.map((t) => (
-            <figure
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 auto-rows-[220px] md:auto-rows-[240px] gap-4">
+          {tiles.map((t, i) => (
+            <button
               key={t.title}
-              className={`group relative overflow-hidden rounded-2xl ${t.span ?? ""}`}
+              type="button"
+              onClick={() => setActiveIndex(i)}
+              className={`group relative overflow-hidden rounded-2xl text-left focus:outline-none focus:ring-2 focus:ring-teal focus:ring-offset-2 focus:ring-offset-cream ${t.span ?? ""}`}
+              aria-label={`Open ${t.title}`}
             >
-              {t.src ? (
-                <Image
-                  src={t.src}
-                  alt={`${t.title}, ${t.location}`}
-                  fill
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-              ) : (
-                <>
-                  <div
-                    className="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
-                    style={{ backgroundImage: t.gradient }}
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 opacity-30 mix-blend-overlay"
-                    style={{
-                      backgroundImage:
-                        "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), transparent 50%), radial-gradient(circle at 70% 80%, rgba(0,0,0,0.3), transparent 60%)",
-                    }}
-                  />
-                </>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <Image
+                src={t.src}
+                alt={`${t.title}, ${t.detail}`}
+                fill
+                sizes="(min-width: 768px) 50vw, 100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
               <figcaption className="absolute bottom-0 left-0 right-0 p-5 text-cream">
                 <div className="font-display text-xl leading-tight">
                   {t.title}
                 </div>
                 <div className="mt-1 text-xs tracking-[0.2em] uppercase text-cream/85">
-                  {t.location}
+                  {t.detail}
                 </div>
               </figcaption>
-            </figure>
+            </button>
           ))}
         </div>
       </div>
+
+      {active && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${active.title}, ${active.detail}`}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/85 backdrop-blur-sm p-4 md:p-10"
+          onClick={close}
+        >
+          <button
+            type="button"
+            onClick={close}
+            aria-label="Close"
+            className="absolute top-4 right-4 md:top-6 md:right-6 rounded-full bg-cream/10 hover:bg-cream/20 text-cream w-10 h-10 flex items-center justify-center transition-colors"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+              />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              prev();
+            }}
+            aria-label="Previous"
+            className="absolute left-2 md:left-6 top-1/2 -translate-y-1/2 rounded-full bg-cream/10 hover:bg-cream/20 text-cream w-10 h-10 md:w-12 md:h-12 flex items-center justify-center transition-colors"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M15 6l-6 6 6 6"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              next();
+            }}
+            aria-label="Next"
+            className="absolute right-2 md:right-6 top-1/2 -translate-y-1/2 rounded-full bg-cream/10 hover:bg-cream/20 text-cream w-10 h-10 md:w-12 md:h-12 flex items-center justify-center transition-colors"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M9 6l6 6-6 6"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+
+          <div
+            className="relative max-w-5xl w-full max-h-full flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative w-full h-[70vh] md:h-[80vh]">
+              <Image
+                src={active.src}
+                alt={`${active.title}, ${active.detail}`}
+                fill
+                sizes="100vw"
+                className="object-contain"
+                priority
+              />
+            </div>
+            <div className="mt-5 text-center text-cream">
+              <div className="font-display text-2xl leading-tight">
+                {active.title}
+              </div>
+              <div className="mt-1 text-xs tracking-[0.2em] uppercase text-cream/75">
+                {active.detail}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

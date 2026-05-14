@@ -9,8 +9,9 @@ const links = [
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/contact", label: "Contact" },
 ];
+
+const ctaLink = { href: "/contact", label: "Contact" };
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -74,10 +75,10 @@ export default function Navbar() {
           })}
           <li>
             <Link
-              href="/contact"
+              href={ctaLink.href}
               className="rounded-full bg-teal px-5 py-2 text-sm font-medium text-cream hover:bg-teal-deep transition-colors"
             >
-              Inquire
+              {ctaLink.label}
             </Link>
           </li>
         </ul>
@@ -109,7 +110,7 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="md:hidden border-t border-teal/15 bg-cream/95 backdrop-blur-md">
+        <div className="md:hidden border-y border-teal/30 bg-cream/95 backdrop-blur-md shadow-[0_12px_24px_-12px_rgba(31,77,77,0.18)]">
           <ul className="flex flex-col px-6 py-4 gap-1">
             {links.map((l) => (
               <li key={l.href}>
@@ -123,10 +124,10 @@ export default function Navbar() {
             ))}
             <li className="pt-2">
               <Link
-                href="/contact"
+                href={ctaLink.href}
                 className="inline-block rounded-full bg-teal px-5 py-2 text-sm font-medium text-cream"
               >
-                Inquire
+                {ctaLink.label}
               </Link>
             </li>
           </ul>

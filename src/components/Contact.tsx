@@ -51,8 +51,8 @@ export default function Contact() {
           Tell me about your day.
         </h2>
         <p className="mt-5 text-muted text-base md:text-lg leading-relaxed max-w-xl mx-auto">
-          A few details to start, I&apos;ll write back within two business
-          days with availability and next steps.
+          A few details to start, I&apos;ll write back soon with availability
+          and next steps.
         </p>
 
         {status === "sent" ? (
@@ -61,7 +61,7 @@ export default function Contact() {
               Note received.
             </h3>
             <p className="mt-3 text-muted">
-              Thank you. I&apos;ll be in touch within two business days.
+              Thank you. I&apos;ll be in touch soon.
             </p>
             <button
               type="button"
@@ -77,14 +77,20 @@ export default function Contact() {
             className="mt-12 grid gap-5 text-left"
             noValidate
           >
-            <input
-              type="text"
-              name="website"
-              tabIndex={-1}
-              autoComplete="off"
+            <div
               aria-hidden
-              className="hidden"
-            />
+              className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden"
+            >
+              <label>
+                Website
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </label>
+            </div>
 
             <div className="grid md:grid-cols-2 gap-5">
               <Field
