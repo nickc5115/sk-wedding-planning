@@ -1,20 +1,37 @@
 import Image from "next/image";
 
+const SHANNON_PHOTO = ""; // set to "/shannon.jpg" once asset is delivered
+
 export default function About() {
   return (
     <section id="about" className="relative py-24 md:py-32">
       <div className="mx-auto max-w-6xl px-6 grid md:grid-cols-2 gap-14 md:gap-20 items-center">
         <div className="relative aspect-[4/5] w-full max-w-md mx-auto">
           <div className="absolute -inset-4 rounded-[2rem] border border-teal/25" />
-          <div className="absolute inset-0 rounded-[1.75rem] overflow-hidden bg-gradient-to-br from-teal-soft/40 via-cream-deep to-teal/20 flex items-center justify-center">
+          {SHANNON_PHOTO ? (
             <Image
-              src="/logo.jpg"
-              alt="SK Wedding Planning"
-              width={320}
-              height={320}
-              className="opacity-90"
+              src={SHANNON_PHOTO}
+              alt="Shannon Kelly"
+              fill
+              sizes="(min-width: 768px) 28rem, 100vw"
+              className="rounded-[1.75rem] object-cover"
             />
-          </div>
+          ) : (
+            <div className="absolute inset-0 rounded-[1.75rem] overflow-hidden bg-gradient-to-br from-teal-soft/40 via-cream-deep to-teal/20 flex items-center justify-center">
+              <div className="text-center px-6">
+                <Image
+                  src="/logo.jpg"
+                  alt="SK Wedding Planning"
+                  width={220}
+                  height={220}
+                  className="opacity-90 mx-auto"
+                />
+                <p className="mt-6 text-xs tracking-[0.22em] uppercase text-teal-deep/70">
+                  Portrait coming soon
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <div>
@@ -22,40 +39,32 @@ export default function About() {
           <h2 className="mt-5 font-display text-4xl md:text-5xl text-teal-deep leading-tight">
             Planning that listens before it leads.
           </h2>
+
+          {/* PLACEHOLDER: replace with Shannon's real bio (2 short paragraphs, 150-250 words total). */}
           <div className="mt-7 space-y-5 text-muted text-base md:text-lg leading-relaxed">
-            <p>
-              Hi, I’m Shannon - the planner, the list-maker, and the calm voice
-              in your inbox at 10pm on a Tuesday. I started SK Wedding Planning
-              because the best weddings I’d ever been to weren’t the biggest -
-              they were the ones that felt like the couple at the center of them.
+            <p className="italic text-muted/80">
+              [Shannon's intro paragraph goes here. A few sentences about who
+              she is, how she works, and what drew her to wedding planning.]
             </p>
-            <p>
-              I work with a small number of couples each year so I can be fully
-              present for yours. From the first vision call to the last toast,
-              I’ll handle the logistics, advocate for your priorities, and keep
-              everything moving - quietly, gracefully, in the background.
+            <p className="italic text-muted/80">
+              [Second paragraph: the approach. Small client load, the kinds of
+              weddings she loves, what couples can expect from working with
+              her.]
             </p>
           </div>
-          <div className="mt-10 grid grid-cols-3 gap-6 text-center">
-            <Stat number="60+" label="Weddings planned" />
-            <Stat number="8 yrs" label="In the industry" />
-            <Stat number="100%" label="Couples on time" />
-          </div>
+
+          {/* PLACEHOLDER: replace with a real pull-quote from Shannon. */}
+          <figure className="mt-10 border-l-2 border-teal/40 pl-5">
+            <blockquote className="font-display text-xl md:text-2xl text-teal-deep leading-snug italic">
+              &quot;[A short belief or guiding sentence Shannon would put her
+              name to.]&quot;
+            </blockquote>
+            <figcaption className="mt-3 text-xs tracking-[0.22em] uppercase text-muted">
+              Shannon Kelly
+            </figcaption>
+          </figure>
         </div>
       </div>
     </section>
-  );
-}
-
-function Stat({ number, label }: { number: string; label: string }) {
-  return (
-    <div>
-      <div className="font-display text-3xl md:text-4xl text-teal-deep">
-        {number}
-      </div>
-      <div className="mt-1 text-xs tracking-[0.18em] uppercase text-muted">
-        {label}
-      </div>
-    </div>
   );
 }

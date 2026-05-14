@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { siteConfig } from "@/lib/site";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -9,16 +10,18 @@ export default function Footer() {
         <Link href="/" className="flex items-center gap-4">
           <Image
             src="/logo.jpg"
-            alt="SK Wedding Planning"
+            alt={siteConfig.name}
             width={56}
             height={56}
             className="rounded-full"
           />
           <div>
             <div className="font-display text-xl text-teal-deep">
-              SK Wedding Planning
+              {siteConfig.name}
             </div>
-            <div className="text-sm text-muted">Shannon Kelly · Planner</div>
+            <div className="text-sm text-muted">
+              {siteConfig.planner} &middot; Planner
+            </div>
           </div>
         </Link>
 
@@ -31,18 +34,20 @@ export default function Footer() {
 
         <div className="text-sm text-muted">
           <a
-            href="mailto:hello@skweddingplanning.com"
+            href={`mailto:${siteConfig.email}`}
             className="hover:text-teal-deep"
           >
-            hello@skweddingplanning.com
+            {siteConfig.email}
           </a>
         </div>
       </div>
       <div className="border-t border-teal/10">
         <div className="mx-auto max-w-6xl px-6 py-5 text-xs text-muted flex flex-col sm:flex-row sm:justify-between gap-2">
-          <span>© {year} SK Wedding Planning. All rights reserved.</span>
+          <span>
+            &copy; {year} {siteConfig.name}. All rights reserved.
+          </span>
           <span className="tracking-[0.2em] uppercase">
-            Made with care in New England
+            {siteConfig.serviceArea}
           </span>
         </div>
       </div>
