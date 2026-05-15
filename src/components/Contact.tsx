@@ -122,6 +122,7 @@ export default function Contact() {
             <label className="block">
               <span className="block text-xs tracking-[0.2em] uppercase text-muted mb-2">
                 A little about your vision
+                <span className="text-teal/60"> *</span>
               </span>
               <textarea
                 name="message"

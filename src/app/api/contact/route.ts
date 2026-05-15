@@ -34,9 +34,17 @@ export async function POST(req: Request) {
   const email = body.email?.trim();
   const message = body.message?.trim();
 
-  if (!name || !email || !message) {
+  const missing: string[] = [];
+  if (!name) missing.push("your name");
+  if (!email) missing.push("your email");
+  if (!message) missing.push("a short message");
+  if (missing.length > 0) {
+    const list =
+      missing.length === 1
+        ? missing[0]
+        : missing.slice(0, -1).join(", ") + " and " + missing[missing.length - 1];
     return Response.json(
-      { ok: false, error: "Please fill in your name, email, and message." },
+      { ok: false, error: `Please add ${list}.` },
       { status: 400 },
     );
   }
