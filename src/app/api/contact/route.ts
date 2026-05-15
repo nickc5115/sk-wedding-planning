@@ -34,11 +34,11 @@ export async function POST(req: Request) {
   const email = body.email?.trim();
   const message = body.message?.trim();
 
-  const missing: string[] = [];
-  if (!name) missing.push("your name");
-  if (!email) missing.push("your email");
-  if (!message) missing.push("a short message");
-  if (missing.length > 0) {
+  if (!name || !email || !message) {
+    const missing: string[] = [];
+    if (!name) missing.push("your name");
+    if (!email) missing.push("your email");
+    if (!message) missing.push("a short message");
     const list =
       missing.length === 1
         ? missing[0]
